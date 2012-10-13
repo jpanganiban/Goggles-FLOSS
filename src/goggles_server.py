@@ -102,6 +102,9 @@ def recognition_controller():
         # Add photo to FlannManager, get flannd' data.
         fm.add_photo(swag['_id'], swag['image_path'])
 
+        ## Index photo
+        #fm.create_index()
+
         # Return response.
         return jsonify({'_id': str(swag['_id']), 'image_path': swag['image_path']})
 
@@ -112,7 +115,8 @@ def recognition_controller():
 @app.route('/reindex')
 def reindex_controller():
 
-    swags = db('swags').find()
+    # Only index  TODO: Include tagged photos
+    swags = db('swags').find({'meta': {'$exists': True}})
 
     # Reindex all swags
     for swag in swags:
