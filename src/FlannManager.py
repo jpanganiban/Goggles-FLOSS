@@ -325,8 +325,12 @@ class FlannManager (object):
     def __get_visual_words(self, descriptors):
 
         key_point_array = require(descriptors, float32, self.default_flags)
+
+        if len(key_point_array.shape) < 2:
+            key_point_array.shape = tuple([key_point_array.shape[0], 1])
+
         nqpts = key_point_array.shape[0]
-        dim = key_point_array.shape[1]
+        #dim = key_point_array.shape[1]
 
         num_neighbors = 1
 
