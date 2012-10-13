@@ -1,0 +1,10 @@
+{
+    "command": {
+        "id": "2",
+        "name": "query_photo",
+        "params": {            
+            "path_photo" : "/home/jesse/Pictures/jp.jpg" 
+        } 
+    }
+}
+

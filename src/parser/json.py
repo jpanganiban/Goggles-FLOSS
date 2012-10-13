@@ -30,33 +30,33 @@ def json_parser (json_data):
     @type json: C{str}
 
     @return: the command in True|False, (command, id_photo, url_photo)
-    @rtype: 
-    """   
-    
+    @rtype:
+    """
+
     res = simplejson.loads(json_data)
-    
+
     command = res['command']
-    
+
     if command['id'] == "1":
         command_data = command['params']
         id_photo = command_data['id_photo']
         path_photo = command_data['path_photo']
-        return True, (command['id'],id_photo, path_photo)        
-    
+        return True, (command['id'],id_photo, path_photo)
+
     elif command['id'] == "2":
-        
+
         command_data = command['params']
         id_photo = 0
         path_photo = command_data['path_photo']
         return True, (command['id'],id_photo, path_photo)
-    
+
     elif command['id'] == "0":
         return True, (command['id'],0,0)
-        
+
     else:
         print "Error: %s value not recognize as command code" % (command['id'])
         return False, ("-1",-1,-1)
 
 
-    
-    
+
+

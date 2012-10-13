@@ -53,7 +53,7 @@ class IOLogError(Exception):
     """
     def __init__(self, msg):
         self.msg = msg
-    
+
     def __str__(self):
         return repr(self.msg)
 
@@ -99,7 +99,7 @@ class Logger(log.PythonLoggingObserver):
             self.lock.release()
         except Exception, e:
             self.lock.release()
-            raise IOLogError('Unexpected error starting logging. %s %s' 
+            raise IOLogError('Unexpected error starting logging. %s %s'
                              % (sys.exc_info()[0], e))
 
     def stop(self):
@@ -114,7 +114,7 @@ class Logger(log.PythonLoggingObserver):
             self.lock.release()
         except Exception, e:
             self.lock.release()
-            raise IOLogError('Unexpected error stopping logging. %s %s' 
+            raise IOLogError('Unexpected error stopping logging. %s %s'
                              % (sys.exc_info()[0], e))
 
     def msg(self, component, level, msg):
@@ -132,15 +132,16 @@ class Logger(log.PythonLoggingObserver):
         @raise IOLogError: If fails logging the message.
         """
         s = '[' + component + '] ' + msg
-        
+
         try:
             self.lock.acquire()
             log.msg(s, logLevel=level)
             self.lock.release()
         except Exception, e:
             self.lock.release()
-            raise IOLogError('Cannot write in logger. %s %s' % (sys.exc_info()[0], e))
-    
+            raise IOLogError(
+                'Cannot write in logger. %s %s' % (sys.exc_info()[0], e))
+
     def err(self, component, msg, exception=None):
         """
         Log an error.
@@ -160,7 +161,7 @@ class Logger(log.PythonLoggingObserver):
         """
         try:
             self.lock.acquire()
-            
+
             msg_error = '[' + component + '] ' + msg
             if exception:
                 msg_error += '\n%s' % traceback.format_exc()
@@ -170,10 +171,12 @@ class Logger(log.PythonLoggingObserver):
             self.lock.release()
         except Exception, e:
             self.lock.release()
-            raise IOLogError('Cannot write in logger. %s %s' % (sys.exc_info()[0], e))
+            raise IOLogError(
+                'Cannot write in logger. %s %s' % (sys.exc_info()[0], e))
 
 # Logger instance
 _logger = None
+
 
 def get_logger():
     """

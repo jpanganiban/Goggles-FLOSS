@@ -30,7 +30,7 @@ from multiprocessing import Process
 
 def callback_query (value):
     reactor.stop()
-    
+
 def callback(value):
     reactor.stop()
 
@@ -53,7 +53,7 @@ if len(sys.argv) < 4:
     print "   -q <file> \t send query file"
     print "   -g <file> \t generate the image index"
     print "\n"
-    exit(-1) 
+    exit(-1)
 
 url = sys.argv[1]
 option = sys.argv[2]
@@ -64,65 +64,65 @@ proxy = Proxy(url)
 if (option == "-a"):
     suboption = sys.argv[3]
     path = sys.argv[4]
-    
+
     if (suboption == "-f"):
         f = open(path, 'r')
         json = f.read()
         f.close()
-        
+
         proxy.callRemote('add_photo', json).addCallbacks(callback, errback)
         reactor.run()
-        
+
     elif (suboption == "-d"):
-    
+
         ls = os.listdir(path)
         c=0
-        
+
         for file_name in ls:
-            
+
             f = open ("./add_photo_template.json","r")
             content = f.read()
             f.close()
-            content_json = (content.replace("$ID_PHOTO",str(c))).replace("$PATH_PHOTO",path+file_name)      
-            
+            content_json = (content.replace("$ID_PHOTO",str(c))).replace("$PATH_PHOTO",path+file_name)
+
             print "Sending photo '%s' ... " % (file_name)
-    
+
             p = Process (target=remote_call, args=(content_json,))
             p.start()
-            p.join()        
-            
+            p.join()
+
             c=c+1
-            
+
     else:
         print "Option '%s' not recognized!" % (option)
-        exit(-1) 
-    
+        exit(-1)
+
 elif (option == "-q" ):
     path = sys.argv[3]
-    
+
     f = open(path, 'r')
     json = f.read()
     f.close()
-    
+
     proxy.callRemote('query_photo', json).addCallbacks(callback_query, errback)
     reactor.run()
-    
-    
+
+
 elif (option == "-g" ):
-    
+
     path = sys.argv[3]
-    
+
     f = open(path, 'r')
     json = f.read()
     f.close()
-    
+
     proxy.callRemote('generate_index', json).addCallbacks(callback, errback)
     reactor.run()
-    
+
 else:
     print "Option '%s' not recognized!" % (option)
-    exit(-1) 
-    
+    exit(-1)
+
 
 
 

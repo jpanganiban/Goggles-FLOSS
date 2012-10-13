@@ -31,30 +31,31 @@ from twisted.application import service, internet
 from twisted.internet import defer
 from twisted.web import server, soap
 
+import traceback
+
 
 #if __name__ == '__main__':
-    
+
 #    imagesPath = "/home/rocapal/libresoft/social-network/private/work/feature-detection/python/images/fotos_500/"
-#    
+#
 #    ls = os.listdir(imagesPath)
-    
+
 #    fm = FlannManager()
 #    c = 0
 #    for image in ls:
 #        fm.add_photo(c,imagesPath + image)
 #        c=c+1
-#    
+#
 #    fm.create_index()
-#    
+#
 #    fm.console()
-    
+
 
 class gogglesFLOSSdSOAP(soap.SOAPPublisher):
-    
+
     def __init__(self):
-        None
         self.fm = fm = FlannManager()
-        
+
    # SOAP Methods
     def soap_add_photo(self, json):
         """
@@ -66,22 +67,21 @@ class gogglesFLOSSdSOAP(soap.SOAPPublisher):
         @return: result of the request
         @rtype: C{twisted.internet.defer.Deferred}
         """
-    
-        ret, data =  json_parser(json)
-        
-        if (ret):       
+
+        ret, data = json_parser(json)
+
+        if (ret):
             if (data[0] == "1"):
-                return self.fm.add_photo(int(data[1]),data[2])
+                return self.fm.add_photo(int(data[1]), data[2])
             else:
                 return False
         else:
             return False
-        
-    
-    def soap_query_photo (self, json):
-        
-        ret, data =  json_parser(json)
-        
+
+    def soap_query_photo(self, json):
+
+        ret, data = json_parser(json)
+
         if (ret):
             if (data[0] == "2"):
                 print data[2]
@@ -90,9 +90,9 @@ class gogglesFLOSSdSOAP(soap.SOAPPublisher):
                 return False
         else:
             return False
-        
-    def soap_generate_index (self,json):
-        
+
+    def soap_generate_index(self, json):
+
         ret, data = json_parser(json)
         if (ret):
             if (data[0] == "0"):
@@ -100,16 +100,16 @@ class gogglesFLOSSdSOAP(soap.SOAPPublisher):
             else:
                 return False
         else:
-            return False    
-        
-    
+            return False
+
+
 class gogglesFLOSSd(service.MultiService):
-    
+
     def __init__(self):
-        print 'Initializing gogglesFLOSSd  ...'  
-        
+        print 'Initializing gogglesFLOSSd  ...'
+
         self.__initialize_net_services("0.0.0.0", 9085)
-        
+
     def __initialize_net_services(self, host, port):
         """
         Initializes the network services.
@@ -130,10 +130,9 @@ class gogglesFLOSSd(service.MultiService):
 
        # self.logger.msg('gogglesFLOSSd', INFO, 'SOAP service initialized')
         print '[gogglesFLOSSd] - SOAP service initialized'
-  
-    
-    
+
+
 # Twisted loading system
 # Please read the Twisted 'Using Application' HOWTO for details.
 application = service.Application('gogglesFLOSSd')
-gogglesFLOSSd().setServiceParent(application)    
+gogglesFLOSSd().setServiceParent(application)
