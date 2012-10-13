@@ -118,11 +118,15 @@ def reindex_controller():
     # Only index  TODO: Include tagged photos
     swags = db('swags').find({'meta': {'$exists': True}})
 
-    # Reindex all swags
-    for swag in swags:
-        fm.add_photo(swag['_id'], swag['image_path'])
+    # Only index if swags return more than 1
+    if len(list(swags)) > 0:
 
-    fm.create_index()
+        # Reindex all swags
+        for swag in list(swags):
+            print swag
+            fm.add_photo(swag['_id'], swag['image_path'])
+
+        fm.create_index()
 
     return jsonify({'status': 'success'})
 
